@@ -34,13 +34,13 @@ def get_keywords():
     
     return keyWords
 
-def analyse(lines):
+def analyse(lines, keywords):
     slist = []
     i = 0
     while i < len(lines):
 
         word = re.split(":|-|~|#", lines[i])
-        if isKeyWord(get_keywords(), word[0]):
+        if isKeyWord(keywords, word[0]):
             if (isEmpty(word[1])):
                 i += 1
                 while (i < len(lines)):
@@ -60,45 +60,15 @@ def analyse(lines):
         i += 1
     return slist
 
-def mainFun(path):
-    keyWords = []
-    # with open('keyword.txt', 'r') as fp:
-    #     keyWords = (fp.readlines())
-    
+def mainFun(path):    
+    keywords = get_keywords()
     lines = pyreceipt.call_tessaract(path)
 
-    print('*******************LINES*******************')
-    print(lines)
-
-    new_lines = process_data(lines, keyWords)
-    print('*******************NEW LINES*******************')
-    print(new_lines)
+    new_lines = process_data(lines, keywords)
     if new_lines != None:
         lines = new_lines
 
-    slist = analyse(lines)
-    # while i < len(lines):
-
-    #     word = re.split(":|-|~|#", lines[i])
-    #     if isKeyWord(keyWords, word[0]):
-    #         if (isEmpty(word[1])):
-    #             i += 1
-    #             while (i < len(lines)):
-    #                 flag = False
-    #                 word[1] += " " + lines[i]
-    #                 str = lines[i].split(", ")
-    #                 for fu in str:
-    #                     if (isPincode(fu)):
-    #                         flag = True
-    #                         break
-
-    #                 if flag:
-    #                     break
-
-    #                 i += 1
-    #         push(slist, word)
-    #     i += 1
-    
+    slist = analyse(lines, keywords)    
     # lines = rearrageList(slist)
 
     return {'tessaract_output': lines,'data': slist}
