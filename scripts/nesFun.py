@@ -4,8 +4,7 @@ import pandas
 import re
 orderedList = ["1", "2", "3", "4", "5", "6", "7"]
 index = pandas.read_csv("fields.csv")
-keyWordList = ["gst", "invoice id", "Order", "PAN NO", "Retailer", "Shipping info", "Delivered to"]
-
+keyWordList = ['LICENSE No','EXPIRES','Effective']
 
 def isKeyWord(wordList, word):
     for s in wordList:

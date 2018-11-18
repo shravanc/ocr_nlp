@@ -27,30 +27,20 @@ def process_data(lines, keyWords):
     
     return None
 
-
-
-def mainFun(path):
-    slist = []
+def get_keywords():
     keyWords = []
     with open('keyword.txt', 'r') as fp:
         keyWords = (fp.readlines())
     
-    lines = pyreceipt.call_tessaract(path)
+    return keyWords
 
-    print('*******************LINES*******************')
-    print(lines)
-
-    new_lines = process_data(lines, keyWords)
-    print('*******************NEW LINES*******************')
-    print(new_lines)
+def analyse(lines):
+    slist = []
     i = 0
-    if new_lines != None:
-        lines = new_lines
-
     while i < len(lines):
 
         word = re.split(":|-|~|#", lines[i])
-        if isKeyWord(keyWords, word[0]):
+        if isKeyWord(get_keywords(), word[0]):
             if (isEmpty(word[1])):
                 i += 1
                 while (i < len(lines)):
@@ -68,6 +58,46 @@ def mainFun(path):
                     i += 1
             push(slist, word)
         i += 1
+    return slist
+
+def mainFun(path):
+    keyWords = []
+    # with open('keyword.txt', 'r') as fp:
+    #     keyWords = (fp.readlines())
+    
+    lines = pyreceipt.call_tessaract(path)
+
+    print('*******************LINES*******************')
+    print(lines)
+
+    new_lines = process_data(lines, keyWords)
+    print('*******************NEW LINES*******************')
+    print(new_lines)
+    if new_lines != None:
+        lines = new_lines
+
+    slist = analyse(lines)
+    # while i < len(lines):
+
+    #     word = re.split(":|-|~|#", lines[i])
+    #     if isKeyWord(keyWords, word[0]):
+    #         if (isEmpty(word[1])):
+    #             i += 1
+    #             while (i < len(lines)):
+    #                 flag = False
+    #                 word[1] += " " + lines[i]
+    #                 str = lines[i].split(", ")
+    #                 for fu in str:
+    #                     if (isPincode(fu)):
+    #                         flag = True
+    #                         break
+
+    #                 if flag:
+    #                     break
+
+    #                 i += 1
+    #         push(slist, word)
+    #     i += 1
     
     # lines = rearrageList(slist)
 
